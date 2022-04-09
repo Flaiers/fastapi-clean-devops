@@ -11,9 +11,9 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_CACHE_DIR='/var/cache/pypoetry'
 
 # Step 2: Install Utilites
-RUN apt-get update \
-    && apt-get install -y curl make \
-    && curl -sSL https://install.python-poetry.org | python -
+RUN apt-get update; \
+    apt-get install -y curl make; \
+    curl -sSL https://install.python-poetry.org | python -
 
 WORKDIR /app
 
