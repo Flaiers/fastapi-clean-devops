@@ -10,22 +10,20 @@ services:
     image: postgres:14-alpine
     networks:
       - network
-      - nginx
     ports:
       - ${DB_PORT}:5432
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
 
   backend:
     build:
       context: backend
       dockerfile: ../dockerfiles/backend/Dockerfile
-    command: ['make', 'run']
     container_name: fastapi_clean_backend
     depends_on:
       - db
     environment:
-      - DB_HOST=db
+      - DB_HOST=fastapi_clean_db
       - DB_PORT=5432
       - DB_USER
       - DB_PASSWORD
@@ -44,4 +42,4 @@ networks:
     driver: bridge
 
 volumes:
-  db-data:
+  db_data:
