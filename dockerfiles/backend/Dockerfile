@@ -11,14 +11,18 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_CACHE_DIR='/var/cache/pypoetry'
 
 # Step 2: Install Utilites
-RUN apt-get update \
-    && apt-get install -y curl make \
-    && curl -sSL https://install.python-poetry.org | python -
+RUN apt-get update; \
+    apt-get install -y curl make build-essential; \
+    curl -sSL https://install.python-poetry.org | python -
 
-WORKDIR /app
+WORKDIR /code
 
-# Step 3: Copy Application
+# Step 3: Install Python Modules
+COPY poetry.lock pyproject.toml /code/
+RUN poetry install --no-root --no-dev
+
+# Step 4: Copy Application
 COPY . .
 
-# Step 4: Install Python Modules
-RUN poetry install --no-root --no-dev
+# Step 5: Run Application
+CMD ["make", "run"]
