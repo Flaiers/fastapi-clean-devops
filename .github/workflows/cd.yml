@@ -1,4 +1,4 @@
-name: CI
+name: CD
 
 on:
   push:
@@ -12,7 +12,7 @@ env:
   repository: $(cut -d "/" -f 2 <<< $GITHUB_REPOSITORY)
 
 jobs:
-  ci:
+  CD:
     name: Deploy to remote server
     runs-on: ubuntu-latest
 
