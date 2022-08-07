@@ -18,7 +18,11 @@ compose-build: ## Build or rebuild services
 
 .PHONY: compose-up
 compose-up: ## Create and start containers
-	docker-compose --env-file $(ENV_FILE) up -d && docker-compose --env-file $(ENV_FILE) logs -f
+	docker-compose --env-file $(ENV_FILE) up -d
+
+.PHONY: compose-logs
+compose-logs: ## View output from containers
+	docker-compose --env-file $(ENV_FILE) logs -f
 
 .PHONY: compose-ps
 compose-ps: ## List containers

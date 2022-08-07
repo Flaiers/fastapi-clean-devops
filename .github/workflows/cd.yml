@@ -24,6 +24,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           submodules: true
 
+      - name: Create envfile
+        run: echo '${{ secrets.ENV_FILE }}' > .env
+
       - name: Setup ssh private key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
@@ -33,3 +36,9 @@ jobs:
         run: |
           rsync -avzr --delete-after -e "ssh -p 2222 -o StrictHostKeyChecking=no" \
           . www@${{ secrets.DOMAIN }}:/opt/${{ env.repository }}
+
+      - name: Build and up services
+        run: |
+          ssh www@${{ secrets.DOMAIN }} -p 2222 -o StrictHostKeyChecking=no << EOF
+          cd /opt/${{ env.repository }} && make compose-build && make compose-up
+          EOF
